@@ -1,59 +1,51 @@
-- name: Bug
+- name: bug
   description: Something isn't working
-  color: "d73a4a"
+  color: 'd73a4a'
 
-- name: Code Cleaning
-  description: no description
-  color: "e4748e"
+- name: deployment
+  description: ''
+  color: 'd4c5f9'
 
-- name: Deployment
-  description: Deployment
-  color: "937db3"
-
-- name: Documentation
+- name: documentation
   description: Improvements or additions to documentation
-  color: "0075ca"
+  color: '0075ca'
 
-- name: Duplicate
+- name: duplicate
   description: This issue or pull request already exists
-  color: "cfd3d7"
+  color: 'cfd3d7'
 
-- name: Experiments
-  description: Experiments
-  color: "808080"
+- name: high priority
+  description: task which has high priority
+  color: 'dd7656'
 
-- name: Feature
-  description: A new feature was requested.
-  color: "5cb85c"
+- name: improvement
+  description: ''
+  color: '286227'
 
-- name: Help
-  description: Extra attention is needed
-  color: "6fd199"
+- name: invalid
+  description: This doesn't seem right
+  color: 'e4e669'
 
-- name: Improvement
-  description: Something should be improved.
-  color: "e3e166"
+- name: low priority
+  description: task which has low priority
+  color: 'cfe29d'
 
-- name: Invalid
-  description: This doesn't seem right'
-  color: "d69136"
+- name: medium priority
+  description: task which has medium priority
+  color: 'f9b112'
 
-- name: Priority High
-  description: Issue with the high priority
-  color: "eb5f52"
+- name: new feature
+  description: New feature or request
+  color: 'a2eeef'
 
-- name: Priority Low
-  description: Issue with the low priority
-  color: "32a877"
-
-- name: Priority Medium
-  description: Issue with the medium priority
-  color: "f0ad4e"
-
-- name: Question
+- name: question
   description: Further information is requested
-  color: "d876e3"
+  color: 'd876e3'
 
-- name: Test
-  description: Test and coverage
-  color: "e99695"
+- name: test and coverage
+  description: ''
+  color: 'c5a416'
+
+- name: wontfix
+  description: This will not be worked on
+  color: 'ffffff'
