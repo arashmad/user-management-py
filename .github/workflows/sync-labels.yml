@@ -15,4 +15,4 @@ jobs:
       - uses: EndBug/label-sync@v2
         with:
           config-file: .github/labels.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GIT_TOKEN_UPDATE_LABELS }}
