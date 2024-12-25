@@ -1,59 +1,59 @@
 - name: Bug
   description: Something isn't working
-  color: "d73a4a"
+  color: 'd73a4a'
 
 - name: Code Cleaning
   description: no description
-  color: "e4748e"
+  color: 'e4748e'
 
 - name: Deployment
   description: Deployment
-  color: "937db3"
+  color: '937db3'
 
 - name: Documentation
   description: Improvements or additions to documentation
-  color: "0075ca"
+  color: '0075ca'
 
 - name: Duplicate
   description: This issue or pull request already exists
-  color: "cfd3d7"
+  color: 'cfd3d7'
 
 - name: Experiments
   description: Experiments
-  color: "808080"
+  color: '808080'
 
 - name: Feature
   description: A new feature was requested.
-  color: "5cb85c"
+  color: '5cb85c'
 
 - name: Help
   description: Extra attention is needed
-  color: "6fd199"
+  color: '6fd199'
 
 - name: Improvement
   description: Something should be improved.
-  color: "e3e166"
+  color: 'e3e166'
 
 - name: Invalid
   description: This doesn't seem right'
-  color: "d69136"
+  color: 'd69136'
 
 - name: Priority High
   description: Issue with the high priority
-  color: "eb5f52"
+  color: 'eb5f52'
 
 - name: Priority Low
   description: Issue with the low priority
-  color: "32a877"
+  color: '32a877'
 
 - name: Priority Medium
   description: Issue with the medium priority
-  color: "f0ad4e"
+  color: 'f0ad4e'
 
 - name: Question
   description: Further information is requested
-  color: "d876e3"
+  color: 'd876e3'
 
 - name: Test
   description: Test and coverage
-  color: "e99695"
+  color: 'e99695'
