@@ -1,0 +1,21 @@
+name: Sync labels
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/sync-labels.yml
+  # workflow_dispatch:
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/labels.yml
+
+      - uses: EndBug/label-sync@v2
+        with:
+          config-file: .github/labels.yml
+          token: ${{ secrets.UPDATE_LABELS }}
