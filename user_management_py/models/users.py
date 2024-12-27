@@ -1,3 +1,6 @@
+"""Docstring."""
+
+
 import uuid
 from datetime import datetime, timezone
 
@@ -19,50 +22,11 @@ def generate_salt() -> str:
     """Generate random salt."""
     return str(uuid.uuid4())
 
-
-# class Users(SQLModel, table=True):
-#     user_id: str = Field(
-#         title="User ID",
-#         description="Unique identifier for the user.",
-#         primary_key=True)
-#     email: str = Field(
-#         title="Email",
-#         description="Email address of the user.",
-#         unique=True)
-#     password: str = Field(
-#         title="Password",
-#         description="Password of the user.")
-#     salt_jwt: str = Field(
-#         title="Salt",
-#         description="Salt for JSON Web Token encryption.",
-#         default_factory=lambda: generate_salt())
-#     salt_pass: str = Field(
-#         title="Salt",
-#         description="Salt for password encryption.",
-#         default_factory=lambda: generate_salt())
-#     firstname: str | None = Field(
-#         title="Firstname",
-#         description="User account firstname.",
-#         default="")
-#     lastname: str | None = Field(
-#         title="Lastname",
-#         description="User account lastname.",
-#         default="")
-#     created_at: str = Field(
-#         title="Created At",
-#         description="Timestamp of when the user was created.",
-#         default_factory=lambda: get_datetime_utc_now())
-#     update_at: str | None = Field(
-#         title="Modified At",
-#         description="Timestamp of when the user was modified.",
-#         default=None)
-#     deleted_at: str | None = Field(
-#         title="Deleted At",
-#         description="Timestamp of when the user was deleted.",
-#         default=None)
-
 # Base Model
+
+
 class BaseUser(SQLModel):
+    """Docstring."""
     email: str = Field(
         title="Email",
         description="Email address of the user.",
@@ -82,6 +46,7 @@ class BaseUser(SQLModel):
 
 # Request Model
 class UserCreate(BaseUser):
+    """Docstring."""
     password: str = Field(
         title="Password",
         description="Password of the user."
@@ -90,6 +55,7 @@ class UserCreate(BaseUser):
 
 # Response Model
 class UserRead(BaseUser):
+    """Docstring."""
     user_id: str = Field(
         title="User ID",
         description="Unique identifier for the user."
@@ -102,6 +68,7 @@ class UserRead(BaseUser):
 
 # Database Model
 class Users(BaseUser, table=True):
+    """Docstring."""
     user_id: str = Field(
         title="User ID",
         description="Unique identifier for the user.",
