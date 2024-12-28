@@ -1,28 +1,16 @@
-"""Docstring."""
+"""
+Fastapi Poetry Boilerplate.
+
+A boilerplate for fastapi python project supported by poetry.
+"""
 
 
-import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 
 from sqlmodel import Field, SQLModel
 
-
-def get_datetime_utc_now() -> datetime:
-    """Get current datetime in UTC."""
-    utc_now = datetime.now(tz=timezone.utc)
-    return utc_now
-
-
-def generate_user_id(email: str) -> str:
-    """Generate unique user id from email."""
-    return str(uuid.uuid5(uuid.NAMESPACE_DNS, email))
-
-
-def generate_salt() -> str:
-    """Generate random salt."""
-    return str(uuid.uuid4())
-
-# Base Model
+from user_management_py.utils import \
+    generate_salt, get_datetime_utc_now, generate_user_id
 
 
 class BaseUser(SQLModel):
@@ -44,7 +32,6 @@ class BaseUser(SQLModel):
     )
 
 
-# Request Model
 class UserCreate(BaseUser):
     """Docstring."""
     password: str = Field(
@@ -53,7 +40,6 @@ class UserCreate(BaseUser):
     )
 
 
-# Response Model
 class UserRead(BaseUser):
     """Docstring."""
     user_id: str = Field(
@@ -66,7 +52,6 @@ class UserRead(BaseUser):
     )
 
 
-# Database Model
 class Users(BaseUser, table=True):
     """Docstring."""
     user_id: str = Field(
