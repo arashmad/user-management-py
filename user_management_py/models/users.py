@@ -1,20 +1,18 @@
-"""
-Fastapi Poetry Boilerplate.
-
-A boilerplate for fastapi python project supported by poetry.
-"""
+"""Docstring."""
 
 
 from datetime import datetime
 
 from sqlmodel import Field, SQLModel
 
-from user_management_py.utils import \
-    generate_salt, get_datetime_utc_now, generate_user_id
+from user_management_py.utils.id import \
+    get_datetime_utc_now, generate_salt, generate_user_id
+
+# Base Model
 
 
 class BaseUser(SQLModel):
-    """Docstring."""
+    """Base User model."""
     email: str = Field(
         title="Email",
         description="Email address of the user.",
@@ -32,16 +30,26 @@ class BaseUser(SQLModel):
     )
 
 
+# Request Model
 class UserCreate(BaseUser):
-    """Docstring."""
+    """
+    Inherit from `BaseUser` model.
+
+    It is used to create a new user.
+    """
     password: str = Field(
         title="Password",
         description="Password of the user."
     )
 
 
+# Response Model
 class UserRead(BaseUser):
-    """Docstring."""
+    """
+    Inherit from `BaseUser` model.
+
+    It is used to read a user.
+    """
     user_id: str = Field(
         title="User ID",
         description="Unique identifier for the user."
@@ -52,8 +60,13 @@ class UserRead(BaseUser):
     )
 
 
+# Database Model
 class Users(BaseUser, table=True):
-    """Docstring."""
+    """
+    Inherit from `BaseUser` model.
+
+    It is used to create a new user in the database.
+    """
     user_id: str = Field(
         title="User ID",
         description="Unique identifier for the user.",
