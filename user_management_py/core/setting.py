@@ -19,5 +19,5 @@ ROOT_DIR = os.path.abspath(
         ".."))
 
 
-APP_PORT = os.environ['APP_PORT']
+APP_PORT = os.environ['APP_PORT'] if "APP_PORT" in os.environ else "8000"
 ALLOWED_CLIENT = os.environ['ALLOWED_CLIENT'] if "ALLOWED_CLIENT" in os.environ else "*"
