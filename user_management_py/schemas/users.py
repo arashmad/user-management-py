@@ -10,24 +10,6 @@ from user_management_py.models.users import UserCreate, UserRead
 
 class CreateUserRequest(UserCreate):
     """Docstring."""
-    email: str = Field(
-        title="Email",
-        description="Email address of the user.")
-
-    password: str = Field(
-        title="Password",
-        description="Password of the user.")
-
-    firstname: str | None = Field(
-        title="Firstname",
-        description="User account firstname.",
-        default="")
-
-    lastname: str | None = Field(
-        title="Lastname",
-        description="User account lastname.",
-        default="")
-
     model_config = {
         "json_schema_extra": {
             "title": "Message",
