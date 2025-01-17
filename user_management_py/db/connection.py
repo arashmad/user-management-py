@@ -3,8 +3,8 @@
 
 from sqlmodel import Session, SQLModel, create_engine
 
-from user_management_py.models.users import Users
-from user_management_py.models.pipelines import Pipelines
+from user_management_py.models.users import Users  # noqa # pylint: disable=unused-import
+from user_management_py.models.pipelines import Pipelines  # noqa # pylint: disable=unused-import
 
 DBNAME = "database.db"
 DATABASE_URL = f"sqlite:///{DBNAME}"
