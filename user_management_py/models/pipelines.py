@@ -108,7 +108,7 @@ class Pipelines(BasePipeline, table=True):
     created_at: datetime = Field(
         title="Created At",
         description="Timestamp of when the pipeline was created.",
-        default_factory=get_datetime_utc_now()
+        default_factory=get_datetime_utc_now
     )
     started_at: datetime | None = Field(
         title="Started At",
