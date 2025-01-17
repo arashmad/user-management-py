@@ -1,7 +1,5 @@
 from uvicorn import run
 
-from user_management_py.create_app import app
-
 if __name__ == "__main__":
     run(
         "user_management_py.create_app:app",
