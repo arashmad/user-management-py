@@ -9,7 +9,9 @@ from fastapi import APIRouter
 import user_management_py.schemas.general as general_schema
 from user_management_py.core.config_parser import config
 
-router = APIRouter()
+router = APIRouter(
+    tags=["Home"]
+)
 
 APP_NAME = config['meta']['app_name']
 

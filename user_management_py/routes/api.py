@@ -6,8 +6,12 @@ A boilerplate for fastapi python project supported by poetry.
 
 from fastapi import APIRouter
 
-from user_management_py.routes.endpoints import home
+import user_management_py.routes.endpoints.home as home_route
+import user_management_py.routes.endpoints.users as users_route
+import user_management_py.routes.endpoints.auth as auth_route
 
 router = APIRouter()
 
-router.include_router(home.router, tags=["Home"])
+router.include_router(home_route.router)
+router.include_router(users_route.router)
+router.include_router(auth_route.router)
