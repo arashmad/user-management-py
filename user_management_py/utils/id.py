@@ -5,7 +5,9 @@ A boilerplate for fastapi python project supported by poetry.
 """
 
 
+import os
 import uuid
+import binascii
 from datetime import datetime, timezone
 
 
@@ -22,7 +24,7 @@ def generate_user_id(email: str) -> str:
 
 def generate_salt() -> str:
     """Generate random salt."""
-    return str(uuid.uuid4())
+    return binascii.hexlify(os.urandom(24)).decode('utf-8')
 
 
 def generate_pipeline_id(user_id: str) -> str:
