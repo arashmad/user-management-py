@@ -4,13 +4,16 @@ Fastapi Poetry Boilerplate.
 A boilerplate for fastapi python project supported by poetry.
 """
 
-import user_management_py.schemas.general as general_schema
-import user_management_py.schemas.pipelines as pipelines_schema
+from sqlmodel import Session, select
+
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
-from sqlmodel import Session, select
-from user_management_py.db.connection import get_session
+
 from user_management_py.models.pipelines import Pipelines
+from user_management_py.db.connection import get_session
+
+import user_management_py.schemas.general as general_schema
+import user_management_py.schemas.pipelines as pipelines_schema
 
 router = APIRouter(tags=["Pipelines"], prefix="/pipelines")
 
@@ -43,9 +46,10 @@ def get_all_pipelines(
                 500: {"model": general_schema.Message}})
 def get_pipeline(pipeline_id: str, session: Session = Depends(get_session)):
     """Docstring."""
-    pipeline_in_db = session.get(Pipelines, pipeline_id)
+    statement = select(Pipelines).where(Pipelines.pipeline_id == pipeline_id)
+    pipeline = session.exec(statement).first()
 
-    if not pipeline_in_db:
+    if not pipeline:
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
             content={
