@@ -34,7 +34,7 @@ class CreateUserRequest(UserCreate):
 
     model_config = {
         "json_schema_extra": {
-            "title": "Message",
+            "title": "Request template for creating a new user",
             "example": {
                 "email": "john.doe@user.domain",
                 "password": "xxxxxxxxxxxx"
@@ -52,7 +52,7 @@ class CreateUserResponse(BaseModel):
 
     model_config = {
         "json_schema_extra": {
-            "title": "Message",
+            "title": "Response template for creating a new user",
             "example": {
                 "user":
                     {

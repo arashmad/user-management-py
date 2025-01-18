@@ -18,7 +18,7 @@ class GetPipelinesRespons(BaseModel):
 
     model_config = {
         "json_schema_extra": {
-            "title": "Message",
+            "title": "Response template for getting pipelines",
             "example": {
                 "pipelines": [
                     {
@@ -48,7 +48,7 @@ class GetPipelineByIdResponse(BaseModel):
 
     model_config = {
         "json_schema_extra": {
-            "title": "Message",
+            "title": "Response template for getting pipeline by id",
             "example": {
                 "pipeline":
                     {
@@ -73,7 +73,7 @@ class CreatePipelineRequest(PipelineCreate):
 
     model_config = {
         "json_schema_extra": {
-            "title": "Message",
+            "title": "Request template for creating a new pipeline",
             "example": {
                 "pipeline_name": "pick a name",
                 "pipeline_description": "pick a description",
@@ -92,7 +92,7 @@ class CreatePipelineResponse(BaseModel):
 
     model_config = {
         "json_schema_extra": {
-            "title": "Message",
+            "title": "Response template for creating a new pipeline",
             "example": {
                 "pipeline":
                     {
@@ -121,7 +121,7 @@ class DeletePipelineResponse(BaseModel):
 
     model_config = {
         "json_schema_extra": {
-            "title": "Message",
+            "title": "Response template for deleting pipeline by id",
             "example": {
                 "pipeline":
                     {
