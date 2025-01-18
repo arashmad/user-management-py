@@ -10,9 +10,9 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from sqlmodel import Session, select
 from user_management_py.db.connection import get_session
-from user_management_py.db.model import Pipelines
+from user_management_py.models.pipelines import Pipelines
 
-router = APIRouter()
+router = APIRouter(tags=["Pipelines"], prefix="/pipelines")
 
 
 @router.get('/',
