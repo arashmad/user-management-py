@@ -49,7 +49,7 @@ def get_pipeline(pipeline_id: str, session: Session = Depends(get_session)):
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
             content={
-                "msg": f"Pipeline ({pipeline_in_db.pipeline_id}) not found."
+                "msg": f"Pipeline ({pipeline_id}) not found."
             })
 
     return JSONResponse(
