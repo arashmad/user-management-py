@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 
 from user_management_py.models.pipelines import Pipelines
 from user_management_py.db.connection import get_session
+from user_management_py.utils.jwt_bearer import JWTBearer
 
 import user_management_py.schemas.general as general_schema
 import user_management_py.schemas.pipelines as pipelines_schema
@@ -19,22 +20,25 @@ router = APIRouter(tags=["Pipelines"], prefix="/pipelines")
 
 
 @router.get('/',
+            dependencies=[Depends(JWTBearer())],
             summary="Get all pipelines",
-            response_model=pipelines_schema.GetPipelinesRespons,
+            # response_model=pipelines_schema.GetPipelinesRespons,
             responses={
                 401: {"model": general_schema.Message},
                 404: {"model": general_schema.Message},
                 500: {"model": general_schema.Message}})
 def get_all_pipelines(
-        skip: int = 0, limit: int = 100, session: Session = Depends(get_session)):
+        skip: int = 0, limit: int = 100, session: Session = Depends(get_session), user_info: dict = Depends(JWTBearer())):
     """Docstring."""
-    pipelines = session.exec(select(Pipelines).offset(skip).limit(limit)).all()
+    # pipelines = session.exec(select(Pipelines).offset(skip).limit(limit)).all()
 
-    return JSONResponse(
-        status_code=status.HTTP_200_OK,
-        content={
-            "pipelines": pipelines
-        })
+    return user_info
+
+    # return JSONResponse(
+    #     status_code=status.HTTP_200_OK,
+    #     content={
+    #         "pipelines": pipelines
+    #     })
 
 
 @router.get('/{pipeline_id}',
