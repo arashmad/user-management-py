@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
 from user_management_py.db.connection import get_session
-from user_management_py.crud import User as user_crud
+from user_management_py.crud import users as user_crud
 from user_management_py.utils.jwt_bearer import jwt_encode
 from user_management_py.utils.auth import pwd_context
 
