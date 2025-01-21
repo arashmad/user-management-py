@@ -25,20 +25,20 @@ def create_access_token(email: str, user_id: str, salt: str, expires_delta: time
     return encoded_jwt
 
 
-class TokenPayload(BaseModel):
-    """Docstring."""
-    email: str
-    user_id: str
-    exp: int
+# class TokenPayload(BaseModel):
+#     """Docstring."""
+#     email: str
+#     user_id: str
+#     exp: int
 
 
-def validate_access_tokeb(access_token: str, salt: str) -> TokenPayload | None:
-    """Docstring."""
-    try:
-        decoded_token = jwt.decode(access_token, salt, algorithms=["HS256"])
-        payload = \
-            decoded_token if decoded_token["expires"] >= time.time() else None
-    except:
-        payload = None
+# def validate_access_tokeb(access_token: str, salt: str) -> TokenPayload | None:
+#     """Docstring."""
+#     try:
+#         decoded_token = jwt.decode(access_token, salt, algorithms=["HS256"])
+#         payload = \
+#             decoded_token if decoded_token["expires"] >= time.time() else None
+#     except:
+#         payload = None
 
-    return payload
+#     return payload
