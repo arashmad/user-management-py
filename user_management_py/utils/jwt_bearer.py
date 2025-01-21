@@ -4,78 +4,105 @@ Fastapi Poetry Boilerplate.
 A boilerplate for fastapi python project supported by poetry.
 """
 
-import jwt
 import time
-from typing import Dict
+from typing import Dict, Any
 from datetime import datetime, timedelta, timezone
 
-from fastapi import Request, HTTPException
+import jwt
+from sqlmodel import Session
+from fastapi import Request, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-from user_management_py.crud.User import get_user_by_id
+from user_management_py.db.connection import get_session
+from user_management_py.crud.users import get_user_by_id
 
 JWT_ALGORITHM = "HS256"
 
-# Helper to get user's unique JWT secret
+
+def jwt_encode(
+        email: str,
+        user_id: str,
+        salt: str,
+        expires_delta: timedelta = timedelta(minutes=15)) -> str:
+    """Generate a JWT token with an expiration date."""
+    expiration_time = datetime.now(timezone.utc) + expires_delta
+    token_payload = {
+        "email": email,
+        "user_id": user_id,
+        "exp": expiration_time}
+    return jwt.encode(token_payload, salt, algorithm=JWT_ALGORITHM)
 
 
-def jwt_encode(user_id: str, salt: str, expires_delta: timedelta = 15):
-    """Docstring."""
-    expire = datetime.now(timezone.utc) + expires_delta
-    payload = {"user_id": user_id}
-    payload.update({"exp": expire})
-    encoded_jwt = jwt.encode(payload, salt, algorithm=JWT_ALGORITHM)
-    return encoded_jwt
+def decode_and_validate_token(token: str, session: Session) -> Dict[str, Any]:
+    """
+    Decode and validate a JWT token.
 
+    This function retrieves the user's salt from the database and validates
+    the token against it. It also checks if the token has expired.
+    """
+    try:
+        # Decode without verifying to extract user_id
+        payload = jwt.decode(token, options={"verify_signature": False})
 
-# def jwt_decode(token: str, user_id: str) -> Dict:
-#     """Docstring."""
-#     try:
-#         user = get_user_by_id(user_id=user_id)
-#         salt = user.salt_jwt
-#         decoded_token = jwt.decode(token, salt, algorithms=[JWT_ALGORITHM])
-#         if decoded_token["expires"] < time.time():
-#             raise HTTPException(status_code=401, detail="Token has expired.")
-#         return decoded_token
-#     except jwt.ExpiredSignatureError:
-#         raise HTTPException(status_code=401, detail="Token has expired.")
-#     except jwt.InvalidTokenError:
-#         raise HTTPException(status_code=401, detail="Invalid token.")
+        user_id = payload.get("user_id")
+
+        if not user_id:
+            raise HTTPException(
+                status_code=401, detail="Token content is invalid")
+
+        # Fetch user and verify token using their salt
+        user = get_user_by_id(user_id=user_id, session=session)
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        # Verify the token with the user's salt
+        verified_payload = jwt.decode(
+            token, user.salt_jwt, algorithms=[JWT_ALGORITHM])
+
+        # Check if token has expired
+        if verified_payload["exp"] < time.time():
+            raise HTTPException(status_code=401, detail="Token has expired")
+
+        return verified_payload
+
+    except jwt.ExpiredSignatureError as e:
+        raise HTTPException(status_code=401, detail="Token has expired") from e
+
+    except jwt.InvalidTokenError as e:
+        raise HTTPException(
+            status_code=401, detail="Invalid token format") from e
 
 
 class JWTBearer(HTTPBearer):
-    """Docstring."""
+    """JWT Authentication class for FastAPI."""
 
     def __init__(self, auto_error: bool = True):
-        """Docstring."""
-        super(JWTBearer, self).__init__(auto_error=auto_error)
+        super().__init__(auto_error=auto_error)
 
-    async def __call__(self, request: Request) -> str:
-        """Docstring."""
-        credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(request)
-        if credentials:
-            if credentials.scheme != "Bearer":
-                raise HTTPException(
-                    status_code=403, detail="Invalid authentication scheme.")
+    async def __call__(self, request: Request, session: Session = Depends(get_session)) -> str:
+        """
+        Extract and validate the JWT token from the request header.
 
-            token = credentials.credentials
-            # Extract the username from the token (replace with your actual logic)
-            try:
-                decoded = \
-                    jwt.decode(token, options={"verify_signature": False})
-                user_id = decoded.get("user_id")
-            except:
-                raise HTTPException(
-                    status_code=403, detail="Invalid token format.")
+        Returns the user_id if the token is valid.
+        """
+        credentials: HTTPAuthorizationCredentials = await super().__call__(request)
 
-            if not user_id:
-                raise HTTPException(
-                    status_code=403, detail="Token content is not valid.")
-
-            # ToDO validate token in signature mode.
-            # jwt_decode(token=token, user_id=user_id)
-
-            return user_id
-        else:
+        if not credentials or credentials.scheme.lower() != "bearer":
             raise HTTPException(
-                status_code=403, detail="Invalid authorization code.")
+                status_code=403, detail="Invalid authentication scheme.")
+
+        token = credentials.credentials
+
+        if not token:
+            raise HTTPException(
+                status_code=403, detail="Token is missing.")
+
+        decoded_payload = \
+            decode_and_validate_token(token=token, session=session)
+
+        if not decoded_payload:
+            raise HTTPException(
+                status_code=401, detail="Token validation failed.")
+
+        return decoded_payload.get("user_id")
