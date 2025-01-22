@@ -4,13 +4,10 @@ Fastapi Poetry Boilerplate.
 A boilerplate for fastapi python project supported by poetry.
 """
 
-import jwt
-import time
-
-from pydantic import BaseModel
-from passlib.context import CryptContext
 from datetime import datetime, timedelta, timezone
 
+from passlib.context import CryptContext
+import jwt
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
