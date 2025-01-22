@@ -20,14 +20,12 @@ JWT_ALGORITHM = "HS256"
 
 
 def jwt_encode(
-        email: str,
         user_id: str,
         salt: str,
         expires_delta: timedelta = timedelta(minutes=15)) -> str:
     """Generate a JWT token with an expiration date."""
     expiration_time = datetime.now(timezone.utc) + expires_delta
     token_payload = {
-        "email": email,
         "user_id": user_id,
         "exp": expiration_time}
     return jwt.encode(token_payload, salt, algorithm=JWT_ALGORITHM)
