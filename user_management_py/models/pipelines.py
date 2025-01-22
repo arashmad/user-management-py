@@ -129,9 +129,13 @@ class Pipelines(BasePipeline, table=True):
     # Constraints
     __table_args__ = (
         CheckConstraint(
-            pipeline_type.sa_column in ['sentinel', 'misac', 'xregnet']),
+            "pipeline_type IN ('sentinel', 'misac', 'xregnet')",
+            name="check_pipeline_type"
+        ),
         CheckConstraint(
-            status.sa_column in ['running', 'completed', 'failed'])
+            "status IN ('not_started', 'running', 'completed', 'failed')",
+            name="check_pipeline_status"
+        ),
     )
 
     def __init__(self, **kwargs):
@@ -149,7 +153,6 @@ class Pipelines(BasePipeline, table=True):
         model_dict = self.model_dump(exclude_none=exclude_none)
 
         for key, value in model_dict.items():
-            print(key, value)
             if isinstance(value, datetime):
                 model_dict[key] = value.isoformat()
 
