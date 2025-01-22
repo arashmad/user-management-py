@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 
 from user_management_py.models.pipelines import Pipelines
 from user_management_py.db.connection import get_session
+import user_management_py.crud.pipelines as crud_pipelines
 from user_management_py.utils.jwt_bearer import JWTBearer
 
 import user_management_py.schemas.general as general_schema
@@ -76,21 +77,21 @@ def get_pipeline(pipeline_id: str, session: Session = Depends(get_session)):
                  500: {"model": general_schema.Message}})
 def create_pipeline(
         pipeline: pipelines_schema.CreatePipelineRequest,
-        session: Session = Depends(get_session)):
-    """Docstring."""
-    new_pipeline = Pipelines(
-        pipeline_name=pipeline.pipeline_name,
-        pipeline_description=pipeline.pipeline_description,
-        pipeline_type=pipeline.pipeline_type)
+        session: Session = Depends(get_session),
+        user_id: dict = Depends(JWTBearer())):
+    """Create a new pipeline."""
 
-    session.add(new_pipeline)
-    session.commit()
-    session.refresh(new_pipeline)
+    new_pipeline = crud_pipelines.create_pipeline(
+        pipelien_name=pipeline.pipeline_name,
+        pipelien_description=pipeline.pipeline_description,
+        pipelien_type=pipeline.pipeline_type,
+        user_id=user_id,
+        session=session)
 
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
         content={
-            "pipeline": new_pipeline
+            "pipeline": new_pipeline.to_dict()
         })
 
 
