@@ -14,7 +14,8 @@ class GetPipelinesRespons(BaseModel):
 
     pipelines: list[PipelineRead] = Field(
         title="Pipelines",
-        description="List of pipelines.")
+        description="List of pipelines.",
+        default=[])
 
     model_config = {
         "json_schema_extra": {
