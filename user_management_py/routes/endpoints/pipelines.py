@@ -31,10 +31,9 @@ router = APIRouter(tags=["Pipelines"], prefix="/pipelines")
 def get_all_pipelines(
         pipeline_type: str,
         session: Session = Depends(get_session),
-        user_id: dict = Depends(JWTBearer())):
+        user_id: str = Depends(JWTBearer())):
     """Fetch all pipelines."""
-
-    pipelines = crud_pipelines.get_all_pipeline(
+    pipelines = crud_pipelines.fetch_pipeline_by_type(
         pipeline_type=pipeline_type,
         user_id=user_id,
         session=session)
@@ -45,8 +44,6 @@ def get_all_pipelines(
             "pipelines": pipelines
         })
 
-    return 200
-
 
 @router.get('/{pipeline_id}',
             summary="Get pipeline with id",
@@ -55,10 +52,15 @@ def get_all_pipelines(
                 401: {"model": general_schema.Message},
                 404: {"model": general_schema.Message},
                 500: {"model": general_schema.Message}})
-def get_pipeline(pipeline_id: str, session: Session = Depends(get_session)):
-    """Docstring."""
-    statement = select(Pipelines).where(Pipelines.pipeline_id == pipeline_id)
-    pipeline = session.exec(statement).first()
+def get_pipeline(
+        pipeline_id: str,
+        session: Session = Depends(get_session),
+        user_id: str = Depends(JWTBearer())):
+    """Fetch a pipeline by ID."""
+    pipeline = crud_pipelines.fetch_pipeline_by_id(
+        pipeline_id=pipeline_id,
+        user_id=user_id,
+        session=session)
 
     if not pipeline:
         return JSONResponse(
@@ -70,7 +72,7 @@ def get_pipeline(pipeline_id: str, session: Session = Depends(get_session)):
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={
-            "pipeline": {}
+            "pipeline": pipeline
         })
 
 
