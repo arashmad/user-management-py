@@ -86,13 +86,13 @@ def get_pipeline(
 def create_pipeline(
         pipeline: pipelines_schema.CreatePipelineRequest,
         session: Session = Depends(get_session),
-        user_id: dict = Depends(JWTBearer())):
+        user_id: str = Depends(JWTBearer())):
     """Create a new pipeline."""
 
     new_pipeline = crud_pipelines.create_pipeline(
-        pipelien_name=pipeline.pipeline_name,
-        pipelien_description=pipeline.pipeline_description,
-        pipelien_type=pipeline.pipeline_type,
+        pipeline_name=pipeline.pipeline_name,
+        pipeline_description=pipeline.pipeline_description,
+        pipeline_type=pipeline.pipeline_type,
         user_id=user_id,
         session=session)
 
@@ -110,23 +110,19 @@ def create_pipeline(
                    401: {"model": general_schema.Message},
                    404: {"model": general_schema.Message},
                    500: {"model": general_schema.Message}})
-def delete_pipeline(pipeline_id: str, session: Session = Depends(get_session)):
-    """Docstring."""
+def delete_pipeline(
+        pipeline_id: str,
+        session: Session = Depends(get_session),
+        user_id: str = Depends(JWTBearer())):
+    """Delete pipeline by id."""
 
-    pipeline_in_db = session.get(Pipelines, pipeline_id)
-
-    if not pipeline_in_db:
-        return JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content={
-                "msg": f"Pipeline ({pipeline_in_db.pipeline_id}) not found."
-            })
-
-    session.delete(pipeline_in_db)
-    session.commit()
+    pipeline = crud_pipelines.delete_pipeline(
+        pipeline_id=pipeline_id,
+        user_id=user_id,
+        session=session)
 
     return JSONResponse(
-        status_code=status.HTTP_201_CREATED,
+        status_code=status.HTTP_200_OK,
         content={
-            "pipeline": pipeline_in_db
+            "pipeline": pipeline
         })
