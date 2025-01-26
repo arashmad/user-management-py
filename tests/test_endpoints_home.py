@@ -24,13 +24,11 @@ class TestDataEndpointsHome():
         """Tear down test fixtures."""
         print("teardown_class called once for the class")
 
-    @classmethod
-    def setup_method(cls):
+    def setup_method(self):
         """Setup method."""
         print("setup_method called for every method")
 
-    @classmethod
-    def teardown_method(cls):
+    def teardown_method(self):
         """Tear down method."""
         print("teardown_method called for every method")
 
