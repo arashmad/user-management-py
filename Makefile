@@ -4,7 +4,8 @@ lint:
 
 # Run test and and generate coverage report in xml format.
 test:
-	poetry run pytest --cov --cov-report=xml -v
+	poetry run pytest --cov --cov-report=xml -v && \
+	poetry run coverage report -m
 
 # Build docs.
 docs:
