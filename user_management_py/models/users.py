@@ -70,8 +70,7 @@ class Users(BaseUser, table=True):
     user_id: str = Field(
         title="User ID",
         description="Unique identifier for the user.",
-        primary_key=True,
-        default_factory=lambda: ""
+        primary_key=True
     )
     password: str = Field(
         title="Password",
@@ -118,7 +117,6 @@ class Users(BaseUser, table=True):
         model_dict = self.model_dump(exclude_none=exclude_none)
 
         for key, value in model_dict.items():
-            print(key, value)
             if isinstance(value, datetime):
                 model_dict[key] = value.isoformat()
 

@@ -11,10 +11,28 @@ DATABASE_URL = f"sqlite:///{DBNAME}"
 
 engine = create_engine(DATABASE_URL)
 
-SQLModel.metadata.create_all(engine)
+
+def init_db():
+    """
+    Initialize the database by creating all tables.
+
+    This function uses the SQLModel metadata to create all tables defined in the
+    models if they do not already exist in the database.
+    """
+    SQLModel.metadata.create_all(engine)
 
 
 def get_session():
-    """Docstring."""
+    """
+    Get a database session.
+
+    This function yields a session object for interacting with the database
+    using SQLModel.
+
+    Yields
+    ------
+    session : Session
+        A SQLModel session object connected to the database.
+    """
     with Session(engine) as session:
         yield session

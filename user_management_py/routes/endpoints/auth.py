@@ -10,9 +10,10 @@ from datetime import timedelta
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
-from user_management_py.models.users import Users
 from user_management_py.db.connection import get_session
-from user_management_py.utils.auth import pwd_context, create_access_token
+from user_management_py.crud import users as user_crud
+from user_management_py.utils.jwt_bearer import jwt_encode
+from user_management_py.utils.auth import pwd_context
 
 import user_management_py.schemas.general as general_schema
 import user_management_py.schemas.auth as auth_schema
@@ -36,9 +37,7 @@ def login(
 ):
     """Docstring."""
 
-    statement = select(Users).where(Users.email == payload.email)
-    user = session.exec(statement).first()
-
+    user = user_crud.get_user_by_email(email=payload.email, session=session)
     if not user:
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -54,8 +53,7 @@ def login(
             })
 
     access_token_expires = timedelta(minutes=30)
-    access_token = create_access_token(
-        email=user.email,
+    access_token = jwt_encode(
         user_id=user.user_id,
         salt=user.salt_jwt,
         expires_delta=access_token_expires)
