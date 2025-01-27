@@ -5,7 +5,7 @@ from sqlmodel import Session, select
 from fastapi import HTTPException, status
 
 from user_management_py.enum.pipeline import PipelineType
-from user_management_py.models.pipelines import Pipelines, PipelineRead
+from user_management_py.models.pipelines import Pipelines
 
 PIPELINE_TYPES = [p.value for p in PipelineType]
 
